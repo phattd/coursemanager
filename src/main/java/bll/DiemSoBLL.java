@@ -41,7 +41,7 @@ public class DiemSoBLL {
                 }
             }
         }
-        return Message.ERROR_ADD_DATA;
+        return Message.ERROR_REMOVE_DATA;
     }
 
     public Message update(DiemSo diemSo)

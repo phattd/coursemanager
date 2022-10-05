@@ -43,7 +43,7 @@ public class GiangVienBLL {
                 }
             }
         }
-        return Message.ERROR_ADD_DATA;
+        return Message.ERROR_REMOVE_DATA;
     }
 
     public Message update(GiangVien giangVien)
