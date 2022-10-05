@@ -1,5 +1,7 @@
 package dal;
 
+import resoure.type.Message;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -17,7 +19,7 @@ public class Database {
     private String pass = null;
     private String urlDatabase = null;
 
-    public Database()
+    private Database()
     {
         checkDriver();
         readFileText();
@@ -42,6 +44,19 @@ public class Database {
             System.err.println("Can't connect '" + database + "'");
         }
     }
+    public void closeConnect() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            System.out.println("Close connect '" + database + "' successly.\n");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Can't close connect " + database + "\n" + ex.getLocalizedMessage());
+        }
+    }
     public ResultSet sqlQuery(String qry) {
         if (checkConnect()) {
             try {
@@ -55,19 +70,18 @@ public class Database {
         }
         return null;
     }
-    public boolean sqlUpdate(String qry) {
+    public Message sqlUpdate(String qry) {
         if (checkConnect()) {
             try {
                 stmt.executeUpdate(qry);
-                System.out.println(" Success Update! " + qry);
-                return true;
+                return Message.OK;
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                return false;
+                return Message.ERROR_QUERY_SQL;
             }
         }
-        return false;
+        return Message.ERROR_QUERY_SQL;
     }
     public boolean checkConnect() {
         if (conn == null || stmt == null) {
