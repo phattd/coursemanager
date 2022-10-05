@@ -37,7 +37,6 @@ public class Database {
             String url = "jdbc:mysql://" + urlDatabase + "/" + database + "?useUnicode=true&characterEncoding=UTF-8";
             conn = DriverManager.getConnection(url, userDatabase, pass);
             stmt = conn.createStatement();
-            System.out.println("\n Connect success");
 
         } catch (SQLException e) {
             System.err.println("Can't connect '" + database + "'");
@@ -47,7 +46,6 @@ public class Database {
         if (checkConnect()) {
             try {
                 rset = stmt.executeQuery(qry);
-                System.out.println("Success Query! ");
                 return rset;
 
             } catch (SQLException ex) {
