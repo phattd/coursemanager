@@ -8,5 +8,65 @@
 
 package dal;
 
+import dto.KhoaHoc;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Date;
+
 public class KhoaHocDAL {
+    private Database database;
+    public ArrayList<KhoaHoc> getList() {
+        Database.getInstance();
+        ArrayList<KhoaHoc> danhSachKhoaHoc = new ArrayList<>();
+        try {
+            ResultSet resultSet = database.sqlQuery("SELECT * FROM `KhoaHoc`");
+            if (resultSet!=null)
+            {
+                while (resultSet.next())
+                {
+                    String idKhoaHoc = resultSet.getString("idKhoaHoc");
+                    String tenKhoaHoc = resultSet.getString("TenKhoaHoc");
+                    Date ngayBD = resultSet.getDate("ThoiGianBatDau");
+                    Date ngayKT = resultSet.getDate("ThoiGianKetThuc");
+                    int gia = resultSet.getInt("Gia");
+
+                    danhSachKhoaHoc.add(new KhoaHoc(idKhoaHoc, tenKhoaHoc, ngayBD, ngayKT, gia));
+                }
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        } finally {
+            database.closeConnect();
+        }
+        return danhSachKhoaHoc;
+    }
+    public boolean add(KhoaHoc khoaHoc)
+    {
+        Database.getInstance();
+        String sql = String.format("INSERT INTO `khoahoc`(`IdKhoaHoc`, `TenKhoaHoc`, `ThoiGianBatDau`, `ThoiGianKetThuc`, `Gia`) VALUES ('%s','%s','%s','%s','%s')", khoaHoc.getIdKhoaHoc(),
+                khoaHoc.getTenKhoaHoc(), khoaHoc.getThoiGianBatDau(), khoaHoc.getThoiGianKetThuc(), khoaHoc.getGia());
+        boolean result = database.sqlUpdate(sql);
+        database.closeConnect();
+
+        return result;
+    }
+    public boolean remove(String idKhoaHoc)
+    {
+        Database.getInstance();
+        boolean result = database.sqlUpdate("DELETE FROM `khoahoc` WHERE idKhoaHoc = " + idKhoaHoc);
+        database.closeConnect();
+        return result;
+    }
+    public boolean update(KhoaHoc khoaHoc)
+    {
+        Database.getInstance();
+        String sql = String.format("UPDATE `khoahoc` SET `TenKhoaHoc`='%s',`ThoiGianBatDau`='%s',`ThoiGianKetThuc`='%s',`Gia`='%s' WHERE idKhoaHoc = '%s' ",
+                khoaHoc.getTenKhoaHoc(), khoaHoc.getThoiGianBatDau(), khoaHoc.getThoiGianKetThuc(), khoaHoc.getGia(), khoaHoc.getIdKhoaHoc());
+        boolean result = database.sqlUpdate(sql);
+        database.closeConnect();
+        return result;
+    }
 }

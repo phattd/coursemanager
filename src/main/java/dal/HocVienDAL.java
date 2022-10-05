@@ -1,10 +1,4 @@
-/*
- * Copyright (c) 2022. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
+
 
 package dal;
 
@@ -54,7 +48,7 @@ public class HocVienDAL {
 
         return result;
     }
-    public boolean remove(String idKhoaHoc,String idHocVien)
+    public boolean remove(String idHocVien)
     {
         Database.getInstance();
         boolean result = database.sqlUpdate("DELETE FROM `hocvien` WHERE idHocVien = " + idHocVien);
