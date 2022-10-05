@@ -70,18 +70,18 @@ public class Database {
         }
         return null;
     }
-    public Message sqlUpdate(String qry) {
+    public boolean sqlUpdate(String qry) {
         if (checkConnect()) {
             try {
                 stmt.executeUpdate(qry);
-                return Message.OK;
+                return true;
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                return Message.ERROR_QUERY_SQL;
+                return false;
             }
         }
-        return Message.ERROR_QUERY_SQL;
+        return false;
     }
     public boolean checkConnect() {
         if (conn == null || stmt == null) {

@@ -33,28 +33,27 @@ public class DiemSoDAL {
         }
         return danhSachDiemSo;
     }
-    public Message add(DiemSo diemSo)
+    public boolean add(DiemSo diemSo)
     {
         Database.getInstance();
-        Message result = database.sqlUpdate("INSERT INTO `diem`(`IdHocVien`, `IdKhoaHoc`, `Diem`) VALUES ('"+diemSo.getIdHocVien()+"','"+diemSo.getIdKhoaHoc()+"','"+diemSo.getDiem()+"')");
+        boolean result = database.sqlUpdate("INSERT INTO `diem`(`IdHocVien`, `IdKhoaHoc`, `Diem`) VALUES ('"+diemSo.getIdHocVien()+"','"+diemSo.getIdKhoaHoc()+"','"+diemSo.getDiem()+"')");
         database.closeConnect();
-        if (result == Message.ERROR_QUERY_SQL) {return  Message.ERROR_ADD_DATA;}
+
         return result;
     }
-    public Message remove(String idKhoaHoc,String idHocVien)
+    public boolean remove(String idKhoaHoc,String idHocVien)
     {
         Database.getInstance();
-        Message result = database.sqlUpdate("DELETE FROM `diem` WHERE idKhoaHoc='"+idKhoaHoc+"' AND idHocVien='"+idHocVien+"' ");
+        boolean result = database.sqlUpdate("DELETE FROM `diem` WHERE idKhoaHoc='"+idKhoaHoc+"' AND idHocVien='"+idHocVien+"' ");
         database.closeConnect();
-        if (result == Message.ERROR_QUERY_SQL) {return  Message.ERROR_REMOVE_DATA;}
+
         return result;
     }
-    public Message update(DiemSo diemSo)
+    public boolean update(DiemSo diemSo)
     {
         Database.getInstance();
-        Message result = database.sqlUpdate("UPDATE `diem` SET `Diem`='"+diemSo.getDiem()+"' WHERE `IdHocVien`='"+diemSo.getIdHocVien()+"' AND `IdKhoaHoc`='"+diemSo.getIdKhoaHoc()+"'");
+        boolean result = database.sqlUpdate("UPDATE `diem` SET `Diem`='"+diemSo.getDiem()+"' WHERE `IdHocVien`='"+diemSo.getIdHocVien()+"' AND `IdKhoaHoc`='"+diemSo.getIdKhoaHoc()+"'");
         database.closeConnect();
-        if (result == Message.ERROR_QUERY_SQL) {return  Message.ERROR_UPDATE_DATA;}
         return result;
     }
 
