@@ -8,6 +8,7 @@
 
 package dal;
 
+import bll.Helpers;
 import dto.LichHoc;
 
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.Date;
 public class LichHocDAL {
     private Database database;
     public ArrayList<LichHoc> getList() {
-        Database.getInstance();
+        database  = new Database();
         ArrayList<LichHoc> danhSachLichHoc = new ArrayList<>();
         try {
             ResultSet resultSet = database.sqlQuery("SELECT * FROM `LichHoc`");
@@ -25,14 +26,16 @@ public class LichHocDAL {
             {
                 while (resultSet.next())
                 {
-                    String idGiangVien = resultSet.getString("idGiangVien");
-                    String idKhoaHoc = resultSet.getString("idKhoaHoc");
-                    String idPhong = resultSet.getString("idPhong");
-                    Date ngay = resultSet.getDate("ngay");
-                    int tiet = resultSet.getInt("tiet");
+                    String idGiangVien = resultSet.getString("IdGiangVien");
+                    String idKhoaHoc = resultSet.getString("IdKhoaHoc");
+                    String idPhong = resultSet.getString("IdPhong");
+                    Date ngay = resultSet.getDate("Ngay");
+                    int tietBD = resultSet.getInt("TietBatDau");
+                    int tietKT = resultSet.getInt("TietKetThuc");
+                    int thuTu = resultSet.getInt("ThuTu");
 
 
-                    danhSachLichHoc.add(new LichHoc(idGiangVien, idKhoaHoc, idPhong, ngay, tiet));
+                    danhSachLichHoc.add(new LichHoc(idGiangVien, idKhoaHoc, idPhong, ngay, tietBD, tietKT, thuTu));
                 }
             }
         }catch (Exception e)
@@ -46,9 +49,9 @@ public class LichHocDAL {
     }
     public boolean add(LichHoc lichHoc)
     {
-        Database.getInstance();
-        String sql = String.format("INSERT INTO `lichhoc`(`IdGiangVien`, `IdKhoaHoc`, `IdPhong`, `Ngay`, `Tiet`) VALUES ('%s','%s','%s','%s','%s')",
-                lichHoc.getIdGiangVien(), lichHoc.getIdKhoaHoc(), lichHoc.getIdPhong(),lichHoc.getNgay(), lichHoc.getTiet() );
+        database  = new Database();
+        String sql = String.format("INSERT INTO `lichhoc`(`IdKhoaHoc`, `IdPhong`, `IdGiangVien`, `TietBatDau`, `TietKetThuc`, `Ngay`, `ThuTu`) VALUES ('%s','%s','%s','%s','%s','%s','%s')", lichHoc.getIdKhoaHoc(),
+                lichHoc.getIdPhong(), lichHoc.getIdGiangVien(), lichHoc.getTietBatDau(), lichHoc.getTietKetThuc(), Helpers.formatDate(lichHoc.getNgay()), lichHoc.getThuThu());
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
 
@@ -56,7 +59,7 @@ public class LichHocDAL {
     }
     public boolean remove(String idKhoaHoc, String idPhong, String idGiangVien)
     {
-        Database.getInstance();
+        database  = new Database();
         boolean result = database.sqlUpdate("DELETE FROM `khoahoc` WHERE idGiangVien = '" + idGiangVien+ "'AND idPhong = '"+
                idPhong +"' AND idKhoaHoc ='" + idKhoaHoc + "'");
         database.closeConnect();
@@ -64,9 +67,9 @@ public class LichHocDAL {
     }
     public boolean update(LichHoc lichHoc)
     {
-        Database.getInstance();
-        String sql = String.format("UPDATE `lichhoc` SET `Ngay`='%s',`Tiet`='%s' WHERE `IdGiangVien`='%s' AND `IdKhoaHoc`='%s' AND `IdPhong`='%s'",
-                lichHoc.getNgay(), lichHoc.getTiet(), lichHoc.getIdKhoaHoc(), lichHoc.getIdKhoaHoc(), lichHoc.getIdPhong());
+        database  = new Database();
+        String sql = String.format("UPDATE `lichhoc` SET `TietBatDau`='%s',`TietKetThuc`='%s',`Ngay`='%s',`ThuTu`='%s' WHERE `IdKhoaHoc`='%s' AND `IdPhong`='%s' AND `IdGiangVien`='%s'",
+                lichHoc.getTietBatDau(), lichHoc.getTietKetThuc(),Helpers.formatDate(lichHoc.getNgay()), lichHoc.getThuThu(), lichHoc.getIdKhoaHoc(), lichHoc.getIdPhong(), lichHoc.getIdGiangVien());
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
         return result;

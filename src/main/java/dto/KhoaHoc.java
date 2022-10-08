@@ -7,6 +7,7 @@ public class KhoaHoc {
     private Date thoiGianBatDau, thoiGianKetThuc;
     private int gia;
 
+    public KhoaHoc() {}
     public KhoaHoc(String idKhoaHoc, String tenKhoaHoc, Date thoiGianBatDau, Date thoiGianKetThuc, int gia) {
         this.idKhoaHoc = idKhoaHoc;
         this.tenKhoaHoc = tenKhoaHoc;
@@ -53,5 +54,19 @@ public class KhoaHoc {
 
     public void setGia(int gia) {
         this.gia = gia;
+    }
+    public Object[] parseArray() {
+        return new Object[] { idKhoaHoc,  tenKhoaHoc, thoiGianBatDau, thoiGianKetThuc, gia};
+    }
+
+    @Override
+    public String toString() {
+        return "KhoaHoc{" +
+                "idKhoaHoc='" + idKhoaHoc + '\'' +
+                ", tenKhoaHoc='" + tenKhoaHoc + '\'' +
+                ", thoiGianBatDau=" + thoiGianBatDau +
+                ", thoiGianKetThuc=" + thoiGianKetThuc +
+                ", gia=" + gia +
+                '}';
     }
 }

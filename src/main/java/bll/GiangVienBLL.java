@@ -5,14 +5,19 @@
 package bll;
 
 import dal.GiangVienDAL;
+import dto.DiemSo;
 import dto.GiangVien;
+import dto.GiangVien;
+import dto.KhoaHoc;
 import resoure.type.Message;
+import resoure.type.Prefix;
 
 import java.util.ArrayList;
 
 public class GiangVienBLL {
     private ArrayList<GiangVien> danhSachGiangVien = new ArrayList<>();
     private GiangVienDAL giangVienDAL = new GiangVienDAL();
+    private static  String lastInsertId ="";
     public GiangVienBLL() {
         readList();
     }
@@ -22,44 +27,125 @@ public class GiangVienBLL {
     public ArrayList<GiangVien> getList() {
         return  danhSachGiangVien;
     }
-    public Message add(GiangVien giangVien)
+    public Message add(ArrayList<String> data)
     {
-        if (giangVienDAL.add(giangVien))
-        {
-            danhSachGiangVien.add(giangVien);
-            return Message.OK;
+        Object[] rs = checkData(data);
+        if (rs[0] == Message.OK){
+            GiangVien giangVien = (GiangVien) rs[1];
+            if (checkUnique(giangVien)) {
+                if (giangVienDAL.add(giangVien))
+                {
+                    danhSachGiangVien.add(giangVien);
+                    return Message.OK;
+                }
+                return Message.ERROR_ADD_DATA;
+            }
+            return Message.ERROR_EXIST_VALUE;
         }
-        return Message.ERROR_ADD_DATA;
+        return (Message) rs[0];
     }
     public Message remove(String idGiangVien)
     {
-        if ( giangVienDAL.remove(idGiangVien) )
-        {
-            for (int index = 0; index < danhSachGiangVien.size(); index++) {
-                GiangVien temp = danhSachGiangVien.get(index);
-                if (temp.getIdGiangVien().equals(idGiangVien)) {
-                    danhSachGiangVien.remove(index);
-                    return Message.OK;
+        if (!idGiangVien.trim().equals("")){
+            if (checkUnique(idGiangVien) ==false) {
+                if ( giangVienDAL.remove(idGiangVien) )
+                {
+                    for (int index = 0; index < danhSachGiangVien.size(); index++) {
+                        GiangVien temp = danhSachGiangVien.get(index);
+                        if (temp.getIdGiangVien().equals(idGiangVien)) {
+                            danhSachGiangVien.remove(index);
+                            return Message.OK;
+                        }
+                    }
                 }
+                return Message.ERROR_REMOVE_DATA;
             }
+            return Message.ERROR_UNEXIST_VALUE;
         }
-        return Message.ERROR_REMOVE_DATA;
+        return Message.ERROR_EMPTY_INPUT;
     }
 
-    public Message update(GiangVien giangVien)
-    {
-        if (giangVienDAL.update(giangVien))
-        {
-            for (int index = 0; index < danhSachGiangVien.size(); index++)
-            {
-                GiangVien temp = danhSachGiangVien.get(index);
-                if (temp.getIdGiangVien().equals(giangVien.getIdGiangVien())) {
-                    danhSachGiangVien.set(index, giangVien);
-                    return Message.OK;
-                }
+    public Message update(ArrayList<String> data) {
+       Object[] rs =checkData(data);
+       if (rs[0] == Message.OK) {
+           GiangVien giangVien = (GiangVien) rs[1];
+           if (checkUnique(giangVien) == false) {
+               if (giangVienDAL.update(giangVien))
+               {
+                   for (int index = 0; index < danhSachGiangVien.size(); index++)
+                   {
+                       GiangVien temp = danhSachGiangVien.get(index);
+                       if (temp.getIdGiangVien().equals(giangVien.getIdGiangVien())) {
+                           setLastInsertId(giangVien.getIdGiangVien());
+                           danhSachGiangVien.set(index, giangVien);
+                           return Message.OK;
+                       }
+                   }
+               }
+               return Message.ERROR_UPDATE_DATA;
+           }
+           return  Message.ERROR_UNEXIST_VALUE;
+       }
+       return (Message) rs[0];
+    }
+    private Object[] checkData(ArrayList<String> data) {
+        for (String index : data) {
+            if (index.trim().equals("")) {
+                return new Object[] {Message.ERROR_EMPTY_INPUT, null};
             }
+        }
+        GiangVien giangVien = new GiangVien();
+        try {
+            giangVien.setIdGiangVien(data.get(0));
+            giangVien.setHoGV(data.get(1));
+            giangVien.setTenGV(data.get(2));
+            giangVien.setDiaChi(data.get(3));
+            if (Helpers.isNum(data.get(4)) && Helpers.isNum(data.get(6))) {
+                giangVien.setSDT(data.get(4));
+                giangVien.setLuong(Helpers.stringToInt(data.get(6)));
+            } else
+            {
+                return new Object[] {Message.ERROR_DATATYPE_INPUT, null};
+            }
+            giangVien.setGioiTinh(5);
+            if (Helpers.isDate(data.get(7))){
+                giangVien.setNgaySinh(Helpers.stringToDate(data.get(7)));
+            }else {
+                return new Object[] {Message.ERROR_DATATYPE_INPUT, null};
+            }
+            return new Object[] {Message.OK, giangVien};
+        } catch (Exception exception) {
+            return new Object[] {Message.ERROR_DATATYPE_INPUT, null};
+        }
+    }
+    public static String generatorKey(){
+        return Helpers.keyGenerator(Prefix.TEACHER.toString());
+    }
+
+    public static void setLastInsertId(String lastInsertId) {
+        GiangVienBLL.lastInsertId = lastInsertId;
+    }
+
+    public static String getLastInsertId() {
+        return lastInsertId;
+    }
+    private boolean checkUnique(GiangVien giangVien) {
+        for (int index = 0; index < danhSachGiangVien.size(); index++) {
+            GiangVien temp = danhSachGiangVien.get(index);
+                if (temp.getIdGiangVien().equals(giangVien.getIdGiangVien())) {
+                    return false;
+                }
 
         }
-        return Message.ERROR_UPDATE_DATA;
+        return true;
+    }
+    private boolean checkUnique(String idGiangVien) {
+        for (int index = 0; index < danhSachGiangVien.size(); index++) {
+            GiangVien temp = danhSachGiangVien.get(index);
+            if (temp.getIdGiangVien().equals(idGiangVien)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

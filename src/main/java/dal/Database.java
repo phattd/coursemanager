@@ -19,7 +19,7 @@ public class Database {
     private String pass = null;
     private String urlDatabase = null;
 
-    private Database()
+    public Database()
     {
         checkDriver();
         readFileText();
@@ -99,8 +99,9 @@ public class Database {
         userDatabase = "";
         pass = "";
 
+
         try {
-            FileInputStream fis = new FileInputStream("ConnectVariable.txt");
+            FileInputStream fis = new FileInputStream("src/main/java/database_info.txt");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
 
@@ -112,6 +113,10 @@ public class Database {
             if (pass == null) {
                 pass = "";
             }
+            System.out.println(urlDatabase);
+            System.out.println(database);
+            System.out.println(userDatabase);
+            System.out.println(pass);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,6 +126,7 @@ public class Database {
     {
         if (conn==null || stmt == null) {
             new Database();
+
         }
     }
 

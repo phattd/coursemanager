@@ -41,4 +41,7 @@ public class PhongHoc {
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
     }
+    public Object[] parseArray() {
+        return new Object[] { idPhongHoc, tenPhongHoc, toaNha, diaChi};
+    }
 }

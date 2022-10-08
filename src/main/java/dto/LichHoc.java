@@ -5,14 +5,19 @@ import java.util.Date;
 public class LichHoc {
     private  String idGiangVien, idKhoaHoc, idPhong;
     private Date ngay;
-    private int tiet;
+    private int tietBatDau, tietKetThuc, thuThu;
 
-    public LichHoc(String idGiangVien, String idKhoaHoc, String idPhong, Date ngay, int tiet) {
+    public LichHoc(String idGiangVien, String idKhoaHoc, String idPhong, Date ngay, int tietBatDau, int tietKetThuc, int thuThu) {
         this.idGiangVien = idGiangVien;
         this.idKhoaHoc = idKhoaHoc;
         this.idPhong = idPhong;
         this.ngay = ngay;
-        this.tiet = tiet;
+        this.tietBatDau = tietBatDau;
+        this.tietKetThuc = tietKetThuc;
+        this.thuThu = thuThu;
+    }
+
+    public LichHoc() {
     }
 
     public String getIdGiangVien() {
@@ -47,11 +52,27 @@ public class LichHoc {
         this.ngay = ngay;
     }
 
-    public int getTiet() {
-        return tiet;
+    public int getTietBatDau() {
+        return tietBatDau;
     }
 
-    public void setTiet(int tiet) {
-        this.tiet = tiet;
+    public void setTietBatDau(int tietBatDau) {
+        this.tietBatDau = tietBatDau;
+    }
+
+    public int getTietKetThuc() {
+        return tietKetThuc;
+    }
+
+    public void setTietKetThuc(int tietKetThuc) {
+        this.tietKetThuc = tietKetThuc;
+    }
+
+    public int getThuThu() {
+        return thuThu;
+    }
+
+    public void setThuThu(int thuThu) {
+        this.thuThu = thuThu;
     }
 }

@@ -8,6 +8,7 @@
 
 package dal;
 
+import bll.Helpers;
 import dto.KhoaHoc;
 
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.Date;
 public class KhoaHocDAL {
     private Database database;
     public ArrayList<KhoaHoc> getList() {
-        Database.getInstance();
+        database = new Database();
         ArrayList<KhoaHoc> danhSachKhoaHoc = new ArrayList<>();
         try {
             ResultSet resultSet = database.sqlQuery("SELECT * FROM `KhoaHoc`");
@@ -45,9 +46,10 @@ public class KhoaHocDAL {
     }
     public boolean add(KhoaHoc khoaHoc)
     {
-        Database.getInstance();
+        database = new Database();
         String sql = String.format("INSERT INTO `khoahoc`(`IdKhoaHoc`, `TenKhoaHoc`, `ThoiGianBatDau`, `ThoiGianKetThuc`, `Gia`) VALUES ('%s','%s','%s','%s','%s')", khoaHoc.getIdKhoaHoc(),
-                khoaHoc.getTenKhoaHoc(), khoaHoc.getThoiGianBatDau(), khoaHoc.getThoiGianKetThuc(), khoaHoc.getGia());
+                khoaHoc.getTenKhoaHoc(), Helpers.formatDate(khoaHoc.getThoiGianBatDau()), Helpers.formatDate(khoaHoc.getThoiGianKetThuc()), khoaHoc.getGia());
+
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
 
@@ -55,16 +57,16 @@ public class KhoaHocDAL {
     }
     public boolean remove(String idKhoaHoc)
     {
-        Database.getInstance();
-        boolean result = database.sqlUpdate("DELETE FROM `khoahoc` WHERE idKhoaHoc = " + idKhoaHoc);
+        database = new Database();
+        boolean result = database.sqlUpdate("DELETE FROM `khoahoc` WHERE IdKhoaHoc = '" + idKhoaHoc +"'");
         database.closeConnect();
         return result;
     }
     public boolean update(KhoaHoc khoaHoc)
     {
-        Database.getInstance();
+        database = new Database();
         String sql = String.format("UPDATE `khoahoc` SET `TenKhoaHoc`='%s',`ThoiGianBatDau`='%s',`ThoiGianKetThuc`='%s',`Gia`='%s' WHERE idKhoaHoc = '%s' ",
-                khoaHoc.getTenKhoaHoc(), khoaHoc.getThoiGianBatDau(), khoaHoc.getThoiGianKetThuc(), khoaHoc.getGia(), khoaHoc.getIdKhoaHoc());
+                khoaHoc.getTenKhoaHoc(), Helpers.formatDate(khoaHoc.getThoiGianBatDau()), Helpers.formatDate(khoaHoc.getThoiGianKetThuc()), khoaHoc.getGia(), khoaHoc.getIdKhoaHoc());
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
         return result;

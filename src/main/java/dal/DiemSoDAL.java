@@ -1,5 +1,6 @@
 package dal;
 
+import bll.Helpers;
 import dto.DiemSo;
 import resoure.type.Message;
 
@@ -10,18 +11,21 @@ import java.util.ArrayList;
 public class DiemSoDAL {
     private Database database;
     public ArrayList<DiemSo> getList() {
-        Database.getInstance();
+        database  = new Database();
         ArrayList<DiemSo> danhSachDiemSo = new ArrayList<>();
         try {
-            ResultSet resultSet = database.sqlQuery("SELECT * FROM `DiemSo`");
+            ResultSet resultSet = database.sqlQuery("SELECT * FROM `Diem`");
             if (resultSet!=null)
             {
                 while (resultSet.next())
                 {
-                    String idKhoaHoc = resultSet.getString("idKhoaHoc");
                     String idHocVien = resultSet.getString("idHocVien");
-                    int diem=resultSet.getInt("Diem");
-                    danhSachDiemSo.add(new DiemSo(idKhoaHoc, idHocVien, diem));
+                    String idKhoaHoc = resultSet.getString("idKhoaHoc");
+                    int diemGK1 = resultSet.getInt("DiemGiuaKi1");
+                    int diemGK2 = resultSet.getInt("DiemGiuaKi2");
+                    int diemThi = resultSet.getInt("DiemThi");
+                    float diemKT = resultSet.getFloat("DiemKetThuc");
+                    danhSachDiemSo.add(new DiemSo(idHocVien, idKhoaHoc, diemGK1, diemGK2, diemThi, diemKT));
                 }
             }
         }catch (Exception e)
@@ -35,15 +39,17 @@ public class DiemSoDAL {
     }
     public boolean add(DiemSo diemSo)
     {
-        Database.getInstance();
-        boolean result = database.sqlUpdate("INSERT INTO `diem`(`IdHocVien`, `IdKhoaHoc`, `Diem`) VALUES ('"+diemSo.getIdHocVien()+"','"+diemSo.getIdKhoaHoc()+"','"+diemSo.getDiem()+"')");
+        database  = new Database();
+        String sql = String.format("INSERT INTO `diem`(`IdHocVien`, `IdKhoaHoc`, `DiemGiuaKi1`, `DiemGiuaKi2`, `DiemThi`, `DiemKetThuc`) VALUES ('%s','%s','%s','%s','%s','%s')",
+                diemSo.getIdHocVien(), diemSo.getIdKhoaHoc(), diemSo.getDiemGiuaKi1(), diemSo.getDiemGiuaKi2(), diemSo.getdiemThi(), diemSo.getDiemKetThuc());
+        boolean result = database.sqlUpdate(sql);
         database.closeConnect();
 
         return result;
     }
     public boolean remove(String idKhoaHoc,String idHocVien)
     {
-        Database.getInstance();
+        database  = new Database();
         boolean result = database.sqlUpdate("DELETE FROM `diem` WHERE idKhoaHoc='"+idKhoaHoc+"' AND idHocVien='"+idHocVien+"' ");
         database.closeConnect();
 
@@ -51,8 +57,9 @@ public class DiemSoDAL {
     }
     public boolean update(DiemSo diemSo)
     {
-        Database.getInstance();
-        boolean result = database.sqlUpdate("UPDATE `diem` SET `Diem`='"+diemSo.getDiem()+"' WHERE `IdHocVien`='"+diemSo.getIdHocVien()+"' AND `IdKhoaHoc`='"+diemSo.getIdKhoaHoc()+"'");
+        database  = new Database();
+        String sql = String.format("UPDATE `diem` SET `DiemGiuaKi1`='%s', `DiemGiuaKi2`='%s',`DiemThi`='%s',`DiemKetThuc`='%s' WHERE `IdHocVien`='%s' AND `IdKhoaHoc`='%s'", diemSo.getDiemGiuaKi1(),diemSo.getDiemGiuaKi2(), diemSo.getdiemThi(), diemSo.getDiemKetThuc(), diemSo.getIdHocVien(), diemSo.getIdKhoaHoc());
+        boolean result = database.sqlUpdate(sql);
         database.closeConnect();
         return result;
     }

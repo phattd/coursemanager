@@ -11,7 +11,7 @@ import java.util.Date;
 public class PhongHocDAL {
     private Database database;
     public ArrayList<PhongHoc> getList() {
-        Database.getInstance();
+        database  = new Database();
         ArrayList<PhongHoc> danhSachPhongHoc = new ArrayList<>();
         try {
             ResultSet resultSet = database.sqlQuery("SELECT * FROM `PhongHoc`");
@@ -42,7 +42,7 @@ public class PhongHocDAL {
     }
     public boolean add(PhongHoc phongHoc)
     {
-        Database.getInstance();
+        database  = new Database();
         String sql = String.format("INSERT INTO `phonghoc`(`IdPhongHoc`, `TenPhongHoc`, `ToaNha`, `DiaChi`) VALUES ('%s','%s','%s','%s')",
                 phongHoc.getIdPhongHoc(), phongHoc.getTenPhongHoc(), phongHoc.getToaNha(), phongHoc.getDiaChi());
         boolean result = database.sqlUpdate(sql);
@@ -52,14 +52,14 @@ public class PhongHocDAL {
     }
     public boolean remove(String idPhongHoc)
     {
-        Database.getInstance();
+        database  = new Database();
         boolean result = database.sqlUpdate("DELETE FROM `phonghoc` WHERE idPhongHoc = " + idPhongHoc);
         database.closeConnect();
         return result;
     }
     public boolean update(PhongHoc phongHoc)
     {
-        Database.getInstance();
+        database  = new Database();
         String sql = String.format("UPDATE `phonghoc` SET `TenPhongHoc`='%s',`ToaNha`='%s',`DiaChi`='%s' WHERE `IdPhongHoc`='%s'",
                 phongHoc.getTenPhongHoc(), phongHoc.getToaNha(), phongHoc.getDiaChi(), phongHoc.getIdPhongHoc());
         boolean result = database.sqlUpdate(sql);

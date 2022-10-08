@@ -7,6 +7,7 @@ public class HocVien {
     private int gioiTinh;
     private Date ngaySinh;
 
+    public HocVien() {}
     public HocVien(String idHocVien, String hoHV, String tenHV, String diaChi, String SDT, int gioiTinh, Date ngaySinh) {
         this.idHocVien = idHocVien;
         this.hoHV = hoHV;
@@ -75,5 +76,8 @@ public class HocVien {
 
     public void setNgaySinh(Date ngaySinh) {
         this.ngaySinh = ngaySinh;
+    }
+    public Object[] parseArray() {
+        return new Object[] {idHocVien,hoHV, tenHV, diaChi,SDT, gioiTinh, ngaySinh};
     }
 }

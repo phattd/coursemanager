@@ -2,6 +2,7 @@
 
 package dal;
 
+import bll.Helpers;
 import dto.GiangVien;
 
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.Date;
 public class GiangVienDAL {
     private Database database;
     public ArrayList<GiangVien> getList() {
-        Database.getInstance();
+        database = new Database();
         ArrayList<GiangVien> danhSachGiangVien = new ArrayList<>();
         try {
             ResultSet resultSet = database.sqlQuery("SELECT * FROM `GiangVien`");
@@ -41,12 +42,12 @@ public class GiangVienDAL {
     }
     public boolean add(GiangVien giangVien)
     {
-        Database.getInstance();
+        database = new Database();
         boolean result = database.sqlUpdate("INSERT INTO `giangvien`(`IdGiangVien`, `Ho`, `Ten`, `NgaySinh`, `GioiTinh`, `SDT`, `DiaChi`, `Luong`) VALUES " +
                 "('" + giangVien.getIdGiangVien() +
                 "','" + giangVien.getHoGV() +
                 "','" + giangVien.getTenGV() + "'," +
-                "'" + giangVien.getNgaySinh() +
+                "'" + Helpers.formatDate(giangVien.getNgaySinh()) +
                 "','" + giangVien.getGioiTinh() +
                 "','" + giangVien.getSDT() +
                 "','" + giangVien.getDiaChi() +
@@ -57,16 +58,16 @@ public class GiangVienDAL {
     }
     public boolean remove(String idGiangVien)
     {
-        Database.getInstance();
-        boolean result = database.sqlUpdate("DELETE FROM `giangvien` WHERE idGiangVien = " + idGiangVien);
+        database = new Database();
+        boolean result = database.sqlUpdate("DELETE FROM `giangvien` WHERE IdGiangVien = '" + idGiangVien+"'");
         database.closeConnect();
         return result;
     }
     public boolean update(GiangVien giangVien)
     {
-        Database.getInstance();
+        database = new Database();
         String sql = String.format("UPDATE `giangvien` SET `Ho`='%s',`Ten`='%s',`NgaySinh`='%s',`GioiTinh`='%s',`SDT`='%s',`DiaChi`='%s',`Luong`='%s' WHERE idGiangVien = '%s' ", giangVien.getHoGV(),
-                giangVien.getTenGV(), giangVien.getNgaySinh(), giangVien.getGioiTinh(), giangVien.getSDT(), giangVien.getDiaChi(), giangVien.getLuong(), giangVien.getIdGiangVien());
+                giangVien.getTenGV(), Helpers.formatDate(giangVien.getNgaySinh()), giangVien.getGioiTinh(), giangVien.getSDT(), giangVien.getDiaChi(), giangVien.getLuong(), giangVien.getIdGiangVien());
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
         return result;

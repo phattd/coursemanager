@@ -39,7 +39,43 @@ public enum Message {
     ERROR_GET_DATA {
         @Override
         public String toString() {
-            return "Không thể lấy sách.";
+            return "Không thể lấy dữ liệu.";
+        }
+    },
+    ERROR_EMPTY_INPUT {
+        @Override
+        public String toString() {
+            return "Đầu vào rỗng.";
+        }
+    },
+    ERROR_DATATYPE_INPUT {
+        @Override
+        public String toString() {
+            return "Dữ liệu nhập sai kiểu";
+        }
+    },
+    ERROR_LIMIT_SCORE_INPUT {
+        @Override
+        public String toString() {
+            return "Điểm nhỏ hơn 10 và lớn hơn 0.";
+        }
+    },
+    ERROR_UNKNOWN {
+        @Override
+        public String toString() {
+            return "Lỗi không xác định.";
+        }
+    },
+    ERROR_EXIST_VALUE {
+        @Override
+        public String toString() {
+            return "Giá trị đã tồn tại.";
+        }
+    },
+    ERROR_UNEXIST_VALUE {
+        @Override
+        public String toString() {
+            return "Giá trị chưa tồn tại.";
         }
     }
 
