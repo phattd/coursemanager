@@ -66,8 +66,10 @@ public class GiangVienDAL {
     public boolean update(GiangVien giangVien)
     {
         database = new Database();
+
         String sql = String.format("UPDATE `giangvien` SET `Ho`='%s',`Ten`='%s',`NgaySinh`='%s',`GioiTinh`='%s',`SDT`='%s',`DiaChi`='%s',`Luong`='%s' WHERE idGiangVien = '%s' ", giangVien.getHoGV(),
                 giangVien.getTenGV(), Helpers.formatDate(giangVien.getNgaySinh()), giangVien.getGioiTinh(), giangVien.getSDT(), giangVien.getDiaChi(), giangVien.getLuong(), giangVien.getIdGiangVien());
+        System.out.println(sql);
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
         return result;

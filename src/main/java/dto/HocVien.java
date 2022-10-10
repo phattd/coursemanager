@@ -77,7 +77,12 @@ public class HocVien {
     public void setNgaySinh(Date ngaySinh) {
         this.ngaySinh = ngaySinh;
     }
+
     public Object[] parseArray() {
-        return new Object[] {idHocVien,hoHV, tenHV, diaChi,SDT, gioiTinh, ngaySinh};
+        String gioiTinhStr = "Nữ";
+        if (gioiTinh == 0) {
+            gioiTinhStr ="Nam";
+        }
+        return new Object[] {idHocVien,hoHV, tenHV,gioiTinhStr, ngaySinh, SDT, diaChi};
     }
 }

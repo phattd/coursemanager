@@ -87,6 +87,10 @@ public class GiangVien {
         this.ngaySinh = ngaySinh;
     }
     public Object[] parseArray() {
-        return new Object[] {idGiangVien, hoGV, tenGV, diaChi, SDT, gioiTinh, luong, ngaySinh};
+        String gioiTinhStr = "Nữ";
+        if (gioiTinh == 0) {
+            gioiTinhStr ="Nam";
+        }
+        return new Object[] {idGiangVien,hoGV, tenGV,gioiTinhStr, ngaySinh, SDT, diaChi ,luong};
     }
 }

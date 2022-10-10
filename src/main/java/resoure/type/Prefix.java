@@ -34,5 +34,11 @@ public enum Prefix {
         public String toString() {
             return "GIANG_VIEN_PREFIX";
         }
+    },
+    ROOM {
+        @Override
+        public String toString() {
+            return "PHONG_HOC_PREFIX";
+        }
     }
 }

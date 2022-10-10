@@ -61,6 +61,7 @@ public class HocVienDAL {
         database  = new Database();
         String sql = String.format("UPDATE `hocvien` SET `HoHV`='%s',`TenHV`='%s',`NgaySinh`='%s',`GioiTinh`='%s',`SDT`='%s',`DiaChi`='%s' WHERE idHocVien = '%s' ", hocVien.getHoHV(),
                 hocVien.getTenHV(),Helpers.formatDate( hocVien.getNgaySinh()), hocVien.getGioiTinh(), hocVien.getSDT(), hocVien.getDiaChi(), hocVien.getIdHocVien());
+
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
         return result;

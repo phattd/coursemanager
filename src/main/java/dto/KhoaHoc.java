@@ -55,6 +55,9 @@ public class KhoaHoc {
     public void setGia(int gia) {
         this.gia = gia;
     }
+    public Object[] parseArrayLite() {
+        return new Object[] { idKhoaHoc,  tenKhoaHoc, thoiGianBatDau};
+    }
     public Object[] parseArray() {
         return new Object[] { idKhoaHoc,  tenKhoaHoc, thoiGianBatDau, thoiGianKetThuc, gia};
     }

@@ -77,6 +77,12 @@ public enum Message {
         public String toString() {
             return "Giá trị chưa tồn tại.";
         }
+    },
+    ERROR_TIMELINE_UNIQUE {
+        @Override
+        public String toString() {
+            return "Thời gian biểu bị trùng.";
+        }
     }
 
 }

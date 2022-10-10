@@ -3,22 +3,18 @@ package dto;
 import java.util.Date;
 
 public class LichHoc {
-    private  String idGiangVien, idKhoaHoc, idPhong;
-    private Date ngay;
-    private int tietBatDau, tietKetThuc, thuThu;
+    private  String idGiangVien, idKhoaHoc, idPhong, thu;
+    private int caHoc;
 
-    public LichHoc(String idGiangVien, String idKhoaHoc, String idPhong, Date ngay, int tietBatDau, int tietKetThuc, int thuThu) {
+    public LichHoc() {}
+    public LichHoc(String idGiangVien, String idKhoaHoc, String idPhong, String thu, int caHoc) {
         this.idGiangVien = idGiangVien;
         this.idKhoaHoc = idKhoaHoc;
         this.idPhong = idPhong;
-        this.ngay = ngay;
-        this.tietBatDau = tietBatDau;
-        this.tietKetThuc = tietKetThuc;
-        this.thuThu = thuThu;
+        this.thu = thu;
+        this.caHoc = caHoc;
     }
 
-    public LichHoc() {
-    }
 
     public String getIdGiangVien() {
         return idGiangVien;
@@ -44,35 +40,33 @@ public class LichHoc {
         this.idPhong = idPhong;
     }
 
-    public Date getNgay() {
-        return ngay;
+    public String getThu() {
+        return thu;
     }
 
-    public void setNgay(Date ngay) {
-        this.ngay = ngay;
+    public void setThu(String thu) {
+        this.thu = thu;
     }
 
-    public int getTietBatDau() {
-        return tietBatDau;
+    public int getCaHoc() {
+        return caHoc;
     }
 
-    public void setTietBatDau(int tietBatDau) {
-        this.tietBatDau = tietBatDau;
+    public void setCaHoc(int caHoc) {
+        this.caHoc = caHoc;
+    }
+    public Object[] parseArray() {
+        return  new Object[] { idKhoaHoc, idGiangVien,idPhong, thu, caHoc};
     }
 
-    public int getTietKetThuc() {
-        return tietKetThuc;
-    }
-
-    public void setTietKetThuc(int tietKetThuc) {
-        this.tietKetThuc = tietKetThuc;
-    }
-
-    public int getThuThu() {
-        return thuThu;
-    }
-
-    public void setThuThu(int thuThu) {
-        this.thuThu = thuThu;
+    @Override
+    public String toString() {
+        return "LichHoc{" +
+                "idGiangVien='" + idGiangVien + '\'' +
+                ", idKhoaHoc='" + idKhoaHoc + '\'' +
+                ", idPhong='" + idPhong + '\'' +
+                ", thu='" + thu + '\'' +
+                ", caHoc=" + caHoc +
+                '}';
     }
 }

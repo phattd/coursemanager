@@ -5,7 +5,7 @@
 package bll;
 
 import dal.GiangVienDAL;
-import dto.DiemSo;
+import dto.GiangVien;
 import dto.GiangVien;
 import dto.GiangVien;
 import dto.KhoaHoc;
@@ -13,6 +13,7 @@ import resoure.type.Message;
 import resoure.type.Prefix;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class GiangVienBLL {
     private ArrayList<GiangVien> danhSachGiangVien = new ArrayList<>();
@@ -107,7 +108,8 @@ public class GiangVienBLL {
             {
                 return new Object[] {Message.ERROR_DATATYPE_INPUT, null};
             }
-            giangVien.setGioiTinh(5);
+            giangVien.setGioiTinh(Integer.parseInt(data.get(5)));
+
             if (Helpers.isDate(data.get(7))){
                 giangVien.setNgaySinh(Helpers.stringToDate(data.get(7)));
             }else {
@@ -147,5 +149,23 @@ public class GiangVienBLL {
             }
         }
         return true;
+    }
+    public ArrayList<GiangVien> search(String tuKhoa) {
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<GiangVien> dsindex = new ArrayList<>();
+        for (GiangVien index : danhSachGiangVien) {
+            String id = index.getIdGiangVien().toLowerCase();
+            String ho = index.getHoGV().toLowerCase();
+            String ten = index.getTenGV().toLowerCase();
+            String diaChi = index.getDiaChi().toLowerCase();
+            String sdt =index.getSDT();
+            String luong = String.valueOf(index.getLuong());
+
+            if (ho.contains(tuKhoa) || ten.contains(tuKhoa) || id.contains(tuKhoa) || diaChi.contains(tuKhoa) ||
+            sdt.contains(tuKhoa) || luong.equals(tuKhoa)) {
+                dsindex.add(index);
+            }
+        }
+        return dsindex;
     }
 }

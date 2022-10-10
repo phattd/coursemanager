@@ -7,6 +7,7 @@ package bll;
 import dal.PhongHocDAL;
 import dto.PhongHoc;
 import resoure.type.Message;
+import resoure.type.Prefix;
 
 import java.util.ArrayList;
 
@@ -61,5 +62,8 @@ public class PhongHocBLL {
 
         }
         return Message.ERROR_UPDATE_DATA;
+    }
+    public static String genaratorKey() {
+        return Helpers.keyGenerator(Prefix.ROOM.toString());
     }
 }

@@ -145,6 +145,79 @@ public class DiemSoBLL {
         }
         return true;
     }
+    public ArrayList<DiemSo> search(String tuKhoa) {
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<DiemSo> dsindex = new ArrayList<>();
+        if (tuKhoa.equals("pass")) {
+            for (DiemSo index : danhSachDiemSo) {
+                if (index.getDiemKetThuc()>=5) {
+                    dsindex.add(index);
+                }
+            }
+        } else {
+            if (tuKhoa.equals("fail")) {
+                for (DiemSo index : danhSachDiemSo) {
+                    if (index.getDiemKetThuc() < 5) {
+                        dsindex.add(index);
+                    }
+                }
+            } else {
+                if (tuKhoa.equals("excellent")) {
+                    for (DiemSo index : danhSachDiemSo) {
+                        if (index.getDiemKetThuc()>=8.5 && index.getDiemKetThuc()<=10) {
+                            dsindex.add(index);
+                        }
+                    }
+                } else {
+                    if (tuKhoa.equals("good")) {
+                        for (DiemSo index : danhSachDiemSo) {
+                            if (index.getDiemKetThuc()>=7 && index.getDiemKetThuc()<=8.4) {
+                                dsindex.add(index);
+                            }
+                        }
+                    } else {
+                        if (tuKhoa.equals("avg")) {
+                            for (DiemSo index : danhSachDiemSo) {
+                                if (index.getDiemKetThuc()>=5 && index.getDiemKetThuc()<=7) {
+                                    dsindex.add(index);
+                                }
+                            }
+                        } else {
+                            if (tuKhoa.equals("weak")) {
+                                for (DiemSo index : danhSachDiemSo) {
+                                    if (index.getDiemKetThuc()<5) {
+                                        dsindex.add(index);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return dsindex;
+    }
+    public ArrayList<DiemSo> find(String idHocVien, String idKhoaHoc) {
+
+        ArrayList<DiemSo> dsindex = new ArrayList<>();
+        for (DiemSo index : danhSachDiemSo) {
+            String idhv = index.getIdHocVien().toLowerCase();
+            String idkh = index.getIdKhoaHoc().toLowerCase();
+            if (!idHocVien.equals("") && !idKhoaHoc.equals("")) {
+                if (idkh.equals(idKhoaHoc) && idhv.equals(idHocVien)) {
+                    dsindex.add(index);
+                }
+            } else {
+                if (idkh.equals(idKhoaHoc) || idhv.equals(idHocVien)) {
+                    dsindex.add(index);
+                }
+
+            }
+
+        }
+        return dsindex;
+    }
 
 
 }

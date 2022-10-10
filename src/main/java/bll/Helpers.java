@@ -64,6 +64,9 @@ public class Helpers {
         }
         return false;
     }
+    public static Date getCurrentDate() {
+        return new Date();
+    }
 
 
 }

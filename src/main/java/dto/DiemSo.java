@@ -83,7 +83,7 @@ public class DiemSo {
                 '}';
     }
 
-    public Object[] toArray() {
+    public Object[] parseArray() {
         return new Object[] { idHocVien,  idKhoaHoc,  diemGiuaKi1, diemGiuaKi2, diemThi,  diemKetThuc};
     }
 }

@@ -7,10 +7,12 @@ package bll;
 import dal.KhoaHocDAL;
 import dto.KhoaHoc;
 import dto.KhoaHoc;
+import dto.KhoaHoc;
 import resoure.type.Message;
 import resoure.type.Prefix;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class KhoaHocBLL {
     private ArrayList<KhoaHoc> danhSachKhoaHoc = new ArrayList<>();
@@ -24,6 +26,26 @@ public class KhoaHocBLL {
     }
     public ArrayList<KhoaHoc> getList() {
         return  danhSachKhoaHoc;
+    }
+    public ArrayList<KhoaHoc>  getListNotOpening() {
+        ArrayList<KhoaHoc> khoaHocs = new ArrayList<>();
+        Date current = new Date();
+        for (KhoaHoc index : danhSachKhoaHoc) {
+            if (current.before(index.getThoiGianBatDau())){
+                khoaHocs.add(index);
+            }
+        }
+        return khoaHocs;
+    }
+    public ArrayList<KhoaHoc>  getListNotOpeningAndNotInvite(String idHocVien) {
+        ArrayList<KhoaHoc> khoaHocs = new ArrayList<>();
+        Date current = new Date();
+        for (KhoaHoc index : danhSachKhoaHoc) {
+            if (current.before(index.getThoiGianBatDau()) && !idHocVien.equals(idHocVien)){
+                khoaHocs.add(index);
+            }
+        }
+        return khoaHocs;
     }
     public Message add(ArrayList<String> data)
     {
@@ -153,5 +175,19 @@ public class KhoaHocBLL {
             }
         }
         return true;
+    }
+    public ArrayList<KhoaHoc> search(String tuKhoa) {
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<KhoaHoc> dsindex = new ArrayList<>();
+        for (KhoaHoc index : danhSachKhoaHoc) {
+            String id = index.getIdKhoaHoc().toLowerCase();
+            String ten = index.getTenKhoaHoc().toLowerCase();
+            String gia = String.valueOf(index.getGia());
+
+            if (ten.contains(tuKhoa) || id.contains(tuKhoa) || gia.equals(tuKhoa)) {
+                dsindex.add(index);
+            }
+        }
+        return dsindex;
     }
 }

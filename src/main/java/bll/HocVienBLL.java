@@ -8,6 +8,7 @@ import dal.HocVienDAL;
 import dto.HocVien;
 import dto.HocVien;
 import dto.HocVien;
+import dto.HocVien;
 import resoure.type.Message;
 import resoure.type.Prefix;
 
@@ -88,11 +89,14 @@ public class HocVienBLL {
         return (Message) rs[0];
     }
     private Object[] checkData(ArrayList<String> data) {
+
+
         for (String index : data) {
             if (index.trim().equals("")) {
                 return new Object[] {Message.ERROR_EMPTY_INPUT, null};
             }
         }
+
         HocVien hocVien = new HocVien();
         try {
             hocVien.setIdHocVien(data.get(0));
@@ -105,7 +109,7 @@ public class HocVienBLL {
             {
                 return new Object[] {Message.ERROR_DATATYPE_INPUT, null};
             }
-            hocVien.setGioiTinh(5);
+            hocVien.setGioiTinh(Integer.parseInt(data.get(5)));
             if (Helpers.isDate(data.get(6))){
                 hocVien.setNgaySinh(Helpers.stringToDate(data.get(6)));
             }else {
@@ -116,6 +120,10 @@ public class HocVienBLL {
             return new Object[] {Message.ERROR_DATATYPE_INPUT, null};
         }
     }
+    public HocVien getHocVienByArray(ArrayList<String> data) {
+        return (HocVien) checkData(data)[1];
+    }
+
     public static String generatorKey(){
         return Helpers.keyGenerator(Prefix.STUDENT.toString());
     }
@@ -144,5 +152,22 @@ public class HocVienBLL {
             }
         }
         return true;
+    }
+    public ArrayList<HocVien> search(String tuKhoa) {
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<HocVien> dsindex = new ArrayList<>();
+        for (HocVien index : danhSachHocVien) {
+            String id = index.getIdHocVien().toLowerCase();
+            String ho = index.getHoHV().toLowerCase();
+            String ten = index.getTenHV().toLowerCase();
+            String diaChi = index.getDiaChi().toLowerCase();
+            String sdt =index.getSDT();
+
+            if (ho.contains(tuKhoa) || ten.contains(tuKhoa) || id.contains(tuKhoa) || diaChi.contains(tuKhoa) ||
+                    sdt.contains(tuKhoa)) {
+                dsindex.add(index);
+            }
+        }
+        return dsindex;
     }
 }
