@@ -591,7 +591,7 @@ public class FormLichHoc extends javax.swing.JPanel {
     private void loadDanhSachKhoaHoc()
     {
         refreshField();
-        ArrayList<KhoaHoc> danhSachKhoaHoc=khoaHocBLL.getList();
+        ArrayList<KhoaHoc> danhSachKhoaHoc=khoaHocBLL.getListNotOpening();
         renderCourseTable= (DefaultTableModel) tbl_khoahoc.getModel();
         renderCourseTable.setNumRows(0);
         for (KhoaHoc index: danhSachKhoaHoc)

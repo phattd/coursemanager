@@ -1,18 +1,33 @@
 package gui;
 
 
+import bll.DiemSoBLL;
+import bll.KhoaHocBLL;
+import bll.LichHocBLL;
+import dto.DiemSo;
+import dto.KhoaHoc;
+import resoure.type.Message;
+
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class DlgDKKhoaHoc extends javax.swing.JDialog {
+    private KhoaHocBLL khoaHocBLL=new KhoaHocBLL();
+    private DiemSoBLL diemSoBLL = new DiemSoBLL();
+    private DefaultTableModel renderCourseTable=new DefaultTableModel();
+    private ArrayList<KhoaHoc> danhSachKhoaHoc=new ArrayList<>();
+    private Message message = Message.CLOSE_EVENT;
+    private String idHocVien;
 
-
-    public DlgDKKhoaHoc() {
+    public DlgDKKhoaHoc(String idHocVien) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setModal(true);
         this.setResizable(false);
+        this.idHocVien = idHocVien;
+        loadDanhSachKhoaHoc();
     }
 
 
@@ -28,7 +43,7 @@ public class DlgDKKhoaHoc extends javax.swing.JDialog {
         btnThem = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_khoahoc = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -53,7 +68,7 @@ public class DlgDKKhoaHoc extends javax.swing.JDialog {
         btnThem.setToolTipText("");
         btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnThemMouseClicked(evt);
+                signup();
             }
         });
 
@@ -83,10 +98,10 @@ public class DlgDKKhoaHoc extends javax.swing.JDialog {
 
         jPanel2.add(pnThem);
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
-        jTable1.setForeground(new java.awt.Color(2, 2, 2));
-        jTable1.setModel(new DefaultTableModel(
+        tbl_khoahoc.setBackground(new java.awt.Color(255, 255, 255));
+        tbl_khoahoc.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        tbl_khoahoc.setForeground(new java.awt.Color(2, 2, 2));
+        tbl_khoahoc.setModel(new DefaultTableModel(
             new Object [][] {
 
             },
@@ -102,10 +117,10 @@ public class DlgDKKhoaHoc extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setRowHeight(36);
-        jTable1.setSelectionBackground(new java.awt.Color(153, 153, 255));
-        jTable1.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setViewportView(jTable1);
+        tbl_khoahoc.setRowHeight(36);
+        tbl_khoahoc.setSelectionBackground(new java.awt.Color(153, 153, 255));
+        tbl_khoahoc.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setViewportView(tbl_khoahoc);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,6 +151,46 @@ public class DlgDKKhoaHoc extends javax.swing.JDialog {
         this.dispose();
 
     }//GEN-LAST:event_btnThemMouseClicked
+    private void loadDanhSachKhoaHoc()
+    {
+
+        danhSachKhoaHoc=khoaHocBLL.getListNotOpeningAndNotInvite(this.idHocVien);
+        renderCourseTable= (DefaultTableModel) tbl_khoahoc.getModel();
+        renderCourseTable.setNumRows(0);
+        for (KhoaHoc index: danhSachKhoaHoc)
+        {
+            renderCourseTable.addRow(index.parseArray());
+        }
+        tbl_khoahoc.setModel(renderCourseTable);
+    }
+    private void signup()
+    {
+        int row= tbl_khoahoc.getSelectedRow();
+        if(row==-1)
+        {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khóa học.");
+        }
+        else
+        {
+            Vector temp=new Vector();
+            for(int i=0;i<renderCourseTable.getColumnCount();i++)
+            {
+                temp.add(tbl_khoahoc.getValueAt(row,i));
+            }
+            ArrayList<String> list =new ArrayList<>();
+            String idKhoaHoc = (String) temp.get(0);
+            list.add(idHocVien);
+            list.add(idKhoaHoc);
+            list.add("0");
+            list.add("0");
+            list.add("0");
+            this.message = diemSoBLL.add(list);
+            this.dispose();
+        }
+    }
+    public Message getMessage() {
+        return message;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnThem;
@@ -144,7 +199,7 @@ public class DlgDKKhoaHoc extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbl_khoahoc;
     private javax.swing.JPanel pnThem;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,5 +1,7 @@
 package dto;
 
+import bll.Helpers;
+
 import java.util.Date;
 
 public class HocVien {
@@ -84,5 +86,15 @@ public class HocVien {
             gioiTinhStr ="Nam";
         }
         return new Object[] {idHocVien,hoHV, tenHV,gioiTinhStr, ngaySinh, SDT, diaChi};
+    }
+    public Object[] parseArrayFormatDate() {
+        String gioiTinhStr = "Nữ";
+        if (gioiTinh == 0) {
+            gioiTinhStr ="Nam";
+        }
+        return new Object[] {idHocVien,hoHV, tenHV,gioiTinhStr, Helpers.formatDate(ngaySinh), SDT, diaChi};
+    }
+    public static String[] getHeader() {
+        return new String[] {"Mã Học Viên","Họ Học Viên", "Tên Học Viên","Giới Tính", "Ngày Sinh", "Số Điện Thoại", "Địa Chỉ"};
     }
 }

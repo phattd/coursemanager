@@ -83,6 +83,18 @@ public enum Message {
         public String toString() {
             return "Thời gian biểu bị trùng.";
         }
+    },
+    CLOSE_EVENT {
+        @Override
+        public String toString() {
+            return "Đóng";
+        }
+    },
+    ERROR_EXPORT_XLS {
+        @Override
+        public String toString() {
+            return "Xuất file .xls không thành công";
+        }
     }
 
 }

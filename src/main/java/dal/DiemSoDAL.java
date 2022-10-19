@@ -40,8 +40,11 @@ public class DiemSoDAL {
     public boolean add(DiemSo diemSo)
     {
         database  = new Database();
-        String sql = String.format("INSERT INTO `diem`(`IdHocVien`, `IdKhoaHoc`, `DiemGiuaKi1`, `DiemGiuaKi2`, `DiemThi`, `DiemKetThuc`) VALUES ('%s','%s','%s','%s','%s','%s')",
-                diemSo.getIdHocVien(), diemSo.getIdKhoaHoc(), diemSo.getDiemGiuaKi1(), diemSo.getDiemGiuaKi2(), diemSo.getdiemThi(), diemSo.getDiemKetThuc());
+        String sql = String.format("INSERT INTO `diem`(`IdHocVien`, `IdKhoaHoc`, " +
+                        "`DiemGiuaKi1`, `DiemGiuaKi2`, `DiemThi`, `DiemKetThuc`) " +
+                        "VALUES ('%s','%s','%s','%s','%s','%s')",
+                diemSo.getIdHocVien(), diemSo.getIdKhoaHoc(), diemSo.getDiemGiuaKi1(),
+                diemSo.getDiemGiuaKi2(), diemSo.getdiemThi(), diemSo.getDiemKetThuc());
         boolean result = database.sqlUpdate(sql);
         database.closeConnect();
 

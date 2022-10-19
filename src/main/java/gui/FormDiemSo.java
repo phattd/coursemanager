@@ -6,11 +6,14 @@
 package gui;
 
 import bll.DiemSoBLL;
+import bll.SheetExport;
 import dto.*;
 import resoure.type.Message;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -31,6 +34,13 @@ public class FormDiemSo extends javax.swing.JPanel {
     public FormDiemSo() {
         initComponents();
         loadDanhSachDiemSo();
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                diemSoBLL.readList();
+                loadDanhSachDiemSo();
+            }
+        });
     }
 
     /**
@@ -216,16 +226,16 @@ public class FormDiemSo extends javax.swing.JPanel {
         btnThem.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         btnThem.setForeground(new java.awt.Color(255, 255, 255));
         btnThem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnThem.setText("Lưu lại");
+        btnThem.setText("Xuất Excel");
         btnThem.setToolTipText("");
         btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnThemMouseClicked(evt);
+                exportXLS();
             }
         });
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setIcon(new javax.swing.ImageIcon(("src/main/java/gui/image/save.png"))); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon(("src/main/java/gui/image/excel.png"))); // NOI18N
 
         javax.swing.GroupLayout pnThemLayout = new javax.swing.GroupLayout(pnThem);
         pnThem.setLayout(pnThemLayout);
@@ -652,6 +662,15 @@ public class FormDiemSo extends javax.swing.JPanel {
         }
         tbl_diemso.setModel(renderScropeTable);
         
+    }
+    public void exportXLS() {
+        Message message = SheetExport.exportDiemSo(DiemSo.getHeader(), diemSoBLL.getList());
+        if (message == Message.OK) {
+            JOptionPane.showMessageDialog(null, message.toString());
+
+        } else {
+            JOptionPane.showMessageDialog(null, message.toString());
+        }
     }
 
 

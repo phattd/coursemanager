@@ -41,7 +41,7 @@ public class KhoaHocBLL {
         ArrayList<KhoaHoc> khoaHocs = new ArrayList<>();
         Date current = new Date();
         for (KhoaHoc index : danhSachKhoaHoc) {
-            if (current.before(index.getThoiGianBatDau()) && !idHocVien.equals(idHocVien)){
+            if (current.before(index.getThoiGianBatDau()) && !idHocVien.equals(index.getIdKhoaHoc())){
                 khoaHocs.add(index);
             }
         }
@@ -57,7 +57,6 @@ public class KhoaHocBLL {
                 if (khoaHocDAL.add(khoaHoc))
                 {
                     danhSachKhoaHoc.add(khoaHoc);
-                    KhoaHocBLL.setLastInsertId(khoaHoc.getIdKhoaHoc());
                     return Message.OK;
                 }
                 return Message.ERROR_ADD_DATA;

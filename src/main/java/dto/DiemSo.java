@@ -86,4 +86,7 @@ public class DiemSo {
     public Object[] parseArray() {
         return new Object[] { idHocVien,  idKhoaHoc,  diemGiuaKi1, diemGiuaKi2, diemThi,  diemKetThuc};
     }
+    public static String[] getHeader() {
+        return new String[] { "Mã Học Viên",  "Mã Khóa Học",  "Điểm GK1", "Điểm GK2", "Điểm Thi",  "Điểm KT"};
+    }
 }

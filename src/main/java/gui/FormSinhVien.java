@@ -7,13 +7,15 @@ package gui;
 
 import bll.Helpers;
 import bll.HocVienBLL;
+import bll.SheetExport;
 import dto.HocVien;
 import resoure.type.Message;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -378,7 +380,7 @@ public class FormSinhVien extends javax.swing.JPanel {
         btnXuatFileExcel.setToolTipText("");
         btnXuatFileExcel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnXuatFileExcelMouseClicked(evt);
+                exportXLS();
             }
         });
 
@@ -416,7 +418,7 @@ public class FormSinhVien extends javax.swing.JPanel {
         btnDangKyMonHoc.setToolTipText("");
         btnDangKyMonHoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDangKyMonHocMouseClicked(evt);
+                signupCourse();
             }
         });
 
@@ -607,8 +609,7 @@ public class FormSinhVien extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXuatFileExcelMouseClicked
 
     private void btnDangKyMonHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDangKyMonHocMouseClicked
-        DlgDKKhoaHoc dlg = new DlgDKKhoaHoc();
-        dlg.setVisible(true);
+
     }//GEN-LAST:event_btnDangKyMonHocMouseClicked
 
     public void refreshField() {
@@ -644,7 +645,6 @@ public class FormSinhVien extends javax.swing.JPanel {
         if (m == Message.OK) {
             JOptionPane.showMessageDialog(null,Message.OK.toString());
             loadDanhSachHocVien();
-
         } else {
             JOptionPane.showMessageDialog(null, m.toString());
             refreshField();
@@ -653,10 +653,7 @@ public class FormSinhVien extends javax.swing.JPanel {
     public void update () {
 
         ArrayList<String> data = getField();
-        for (String index: data) {
 
-            System.out.println(index);
-        }
         Message m = hocVienBLL.update(data);
         if (m == Message.OK) {
             JOptionPane.showMessageDialog(null,Message.OK.toString());
@@ -715,6 +712,39 @@ public class FormSinhVien extends javax.swing.JPanel {
         }
         tbl_sinhvien.setModel(renderStudentTable);
 
+    }
+    private void signupCourse() {
+        int row= tbl_sinhvien.getSelectedRow();
+        if(row==-1)
+        {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn học viên.");
+        } else {
+            Vector temp=new Vector();
+            for(int i=0;i<renderStudentTable.getColumnCount();i++)
+            {
+                temp.add(tbl_sinhvien.getValueAt(row,i));
+            }
+            DlgDKKhoaHoc dlg = new DlgDKKhoaHoc((String) temp.get(0));
+            dlg.setVisible(true);
+            dlg.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    if (dlg.getMessage() != Message.CLOSE_EVENT) {
+                        JOptionPane.showMessageDialog(null, dlg.getMessage().toString());
+                    }
+
+                }
+            });
+        }
+    }
+    public void exportXLS() {
+        Message message = SheetExport.exportHocVien(HocVien.getHeader(), hocVienBLL.getList());
+        if (message == Message.OK) {
+           JOptionPane.showMessageDialog(null, message.toString());
+
+        } else {
+            JOptionPane.showMessageDialog(null, message.toString());
+        }
     }
 
 
